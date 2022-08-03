@@ -34,15 +34,17 @@ public class APITask extends DefaultMultiTask {
 
     private final PoseidonLegoSet legoSet;
     private final String name;
+    private final APITask compensatingTask;
 
-    public APITask(PoseidonLegoSet legoSet, String name, String loopOverContext, Map<String, Object> context) throws ComposerInstantiationException {
+    public APITask(PoseidonLegoSet legoSet, String name, String loopOverContext, Map<String, Object> context, boolean isModifying, APITask compensatingTask) throws ComposerInstantiationException {
         super(legoSet.getDataSourceExecutor(),
                 null,
                 new DefaultComposer(context),
-                loopOverContext == null ? null : new DefaultComposer(loopOverContext));
+                loopOverContext == null ? null : new DefaultComposer(loopOverContext), isModifying);
 
         this.legoSet = legoSet;
         this.name = name;
+        this.compensatingTask = compensatingTask;
     }
 
     @Override
@@ -77,5 +79,13 @@ public class APITask extends DefaultMultiTask {
         }
 
         return dataSourceRequest;
+    }
+
+    public APITask getCompensatingTask() {
+        return compensatingTask;
+    }
+
+    public String getName() {
+        return name;
     }
 }

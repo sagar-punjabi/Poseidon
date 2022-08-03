@@ -39,6 +39,15 @@ public class EndPoint {
     private String responseMergerClass;
     private String errorResponseObject;
     private String[] description;
+    private boolean is_modifying;
+
+    public boolean isIs_modifying() {
+        return is_modifying;
+    }
+
+    public void setIs_modifying(boolean is_modifying) {
+        this.is_modifying = is_modifying;
+    }
 
     public String getHttpMethod() {
         return httpMethod;
@@ -194,6 +203,9 @@ public class EndPoint {
             return false;
         }
         if (!Arrays.equals(description, endPoint.getDescription())) {
+            return false;
+        }
+        if (!Objects.equals(is_modifying, endPoint.isIs_modifying())) {
             return false;
         }
         return true;

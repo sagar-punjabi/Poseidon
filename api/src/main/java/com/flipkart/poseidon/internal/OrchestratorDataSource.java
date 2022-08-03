@@ -18,12 +18,14 @@ package com.flipkart.poseidon.internal;
 
 import com.flipkart.hydra.dispatcher.DefaultDispatcher;
 import com.flipkart.hydra.dispatcher.Dispatcher;
+import com.flipkart.hydra.dispatcher.RetryDispatcher;
 import com.flipkart.hydra.task.Task;
 import com.flipkart.poseidon.datasources.AbstractDataSource;
 import com.flipkart.poseidon.mappers.Mapper;
 import com.flipkart.poseidon.model.annotations.Trace;
 import flipkart.lego.api.entities.DataType;
 import flipkart.lego.api.entities.LegoSet;
+import flipkart.lego.api.entities.Request;
 
 import java.util.List;
 import java.util.Map;
@@ -47,10 +49,19 @@ public class OrchestratorDataSource extends AbstractDataSource {
         this.mappedBeans = mappedBeans;
     }
 
+    public OrchestratorDataSource(LegoSet legoSet, Map<String, Object> initialParams, Map<String, Task> tasks, Object responseContext, Set<Mapper> mappers, List<Object> mappedBeans, Request request) {
+        super(legoSet, request);
+        this.initialParams = initialParams;
+        this.tasks = tasks;
+        this.responseContext = responseContext;
+        this.mappers = mappers;
+        this.mappedBeans = mappedBeans;
+    }
+
     @Override
     public DataType call() throws Exception {
         APIComposer composer = new APIComposer(responseContext, initialParams, mappers, mappedBeans);
-        Dispatcher dispatcher = new DefaultDispatcher(this.legoset.getDataSourceExecutor());
+        Dispatcher dispatcher = new RetryDispatcher(this.legoset.getDataSourceExecutor(), request);
         Object response = dispatcher.execute(initialParams, tasks, composer);
 
         if (response == null) {

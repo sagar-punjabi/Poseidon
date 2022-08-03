@@ -17,6 +17,13 @@
       "context": {
         "userId": "{{$userId}}"
       }
+      ,"modifying": true,
+      "compensatingTask": {
+        "name": "CompensatingUserDS_1.0.0",
+        "context": {
+          "userId": "{{$userId}}"
+        }
+      }
     },
     "postsDT": {
       "name": "PostsDS_1.0.0",

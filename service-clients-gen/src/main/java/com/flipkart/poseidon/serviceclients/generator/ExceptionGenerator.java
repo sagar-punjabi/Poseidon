@@ -17,6 +17,8 @@
 package com.flipkart.poseidon.serviceclients.generator;
 
 import com.flipkart.poseidon.serviceclients.ServiceClientException;
+import com.flipkart.poseidon.serviceclients.NonRetryableException;
+import com.flipkart.poseidon.serviceclients.RetryableException;
 import com.sun.codemodel.*;
 
 import java.io.File;
@@ -80,11 +82,14 @@ public class ExceptionGenerator {
         superCall.arg(JExpr.ref(throwableVar));
     }
 
-    public void addExceptionClass(String destinationFolder, String className) throws JClassAlreadyExistsException, IOException {
+    public void addExceptionClass(String destinationFolder, String className, Integer response) throws JClassAlreadyExistsException, IOException {
         JCodeModel model = new JCodeModel();
         JDefinedClass definedClass = model._class(className, ClassType.CLASS);
         definedClass._extends(model.ref(ServiceClientException.class));
-
+        if (response >= 500)
+            definedClass._implements(model.ref(RetryableException.class));
+        else if (response >= 400)
+            definedClass._implements(model.ref(NonRetryableException.class));
         addAnnotations(model, definedClass);
         addConstructor(definedClass);
         addConstructorErrorObject(definedClass);

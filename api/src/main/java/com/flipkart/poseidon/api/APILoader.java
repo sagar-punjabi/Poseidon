@@ -99,10 +99,20 @@ public class APILoader {
         for (String key : sources.keySet()) {
             TaskPOJO dataSourcePOJO = sources.get(key);
             String name = dataSourcePOJO.getName();
-
+            boolean isModifying = dataSourcePOJO.isModifying();
             Map<String, Object> context = dataSourcePOJO.getContext();
             String loopOverContext = dataSourcePOJO.getLoopOver();
-            tasks.put(key, new APITask(legoSet, name, loopOverContext, context));
+            TaskPOJO compensatingDataSourcePOJO = dataSourcePOJO.getCompensatingTask();
+            APITask compensatingTask = null;
+            if (compensatingDataSourcePOJO != null) {
+                String compensatingTaskName = compensatingDataSourcePOJO.getName();
+                boolean compensatingTaskIsModifying = compensatingDataSourcePOJO.isModifying();
+                Map<String, Object> compensatingTaskContext = compensatingDataSourcePOJO.getContext();
+                String compensatingTaskLoopOverContext = compensatingDataSourcePOJO.getLoopOver();
+                compensatingTask = new APITask(legoSet, compensatingTaskName,
+                        compensatingTaskLoopOverContext, compensatingTaskContext, compensatingTaskIsModifying, null);
+            }
+            tasks.put(key, new APITask(legoSet, name, loopOverContext, context, isModifying, compensatingTask));
         }
 
         return tasks;

@@ -23,6 +23,8 @@ public class TaskPOJO {
     private String name;
     private Map<String, Object> context;
     private String loopOver;
+    private boolean modifying;
+    private TaskPOJO compensatingTask;
 
     public String getName() {
         return name;
@@ -34,5 +36,21 @@ public class TaskPOJO {
 
     public String getLoopOver() {
         return loopOver;
+    }
+
+    public boolean isModifying() {
+        return modifying;
+    }
+
+    public TaskPOJO getCompensatingTask() {
+        return compensatingTask;
+    }
+
+    public void setCompensatingTask(TaskPOJO compensatingTask) {
+        this.compensatingTask = compensatingTask;
+    }
+
+    public void setModifying(boolean modifying) {
+        this.modifying = modifying;
     }
 }
