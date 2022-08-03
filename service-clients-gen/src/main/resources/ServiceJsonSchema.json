@@ -134,6 +134,9 @@
             },
             "description": {
               "$ref": "#/definitions/stringArray"
+            },
+            "is_modifying": {
+              "type": "boolean"
             }
           },
           "required": [

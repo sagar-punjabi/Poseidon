@@ -64,7 +64,8 @@
       "responseObject": "Posts",
       "description": [
         "Fetches all posts of an user"
-      ]
+      ],
+      "is_modifying": true
     },
     "getAllCommentsOfPost": {
       "httpMethod": "GET",

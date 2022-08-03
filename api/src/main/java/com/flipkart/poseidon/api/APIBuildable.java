@@ -66,7 +66,7 @@ public class APIBuildable implements Buildable {
         Map<String, Object> initialParams = request.getAttribute(RequestConstants.PARAMS);
         mappedBeans = new ArrayList<>();
         OrchestratorDataSource dataSource = new OrchestratorDataSource(legoSet, initialParams,
-                tasks, pojo.getResponse(), getMappers(), mappedBeans);
+                tasks, pojo.getResponse(), getMappers(), mappedBeans, request);
         Map<String, DataSource> dataSourceMap = new HashMap<>();
         dataSourceMap.put(RESPONSE_KEY, legoSet.wrapDataSource(dataSource, request));
         return dataSourceMap;

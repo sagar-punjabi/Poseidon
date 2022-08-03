@@ -255,13 +255,13 @@ public class Generator {
 
         // create a generic exception class for a service
         String exceptionClassName = packageName + "." + serviceIdl.getService().getName() + "Exception";
-        ExceptionGenerator.getInstance().addExceptionClass(destinationFolder, exceptionClassName);
+        ExceptionGenerator.getInstance().addExceptionClass(destinationFolder, exceptionClassName, 0);
 
         // add exception classes for particular response types
         if (serviceIdl.getExceptions() != null && serviceIdl.getExceptions().size() > 0) {
             for (int response : serviceIdl.getExceptions().keySet()) {
                 exceptionClassName = packageName + "." + serviceIdl.getExceptions().get(response) + "Exception";
-                ExceptionGenerator.getInstance().addExceptionClass(destinationFolder, exceptionClassName);
+                ExceptionGenerator.getInstance().addExceptionClass(destinationFolder, exceptionClassName, response);
             }
         }
     }
